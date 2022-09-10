@@ -1,0 +1,42 @@
+--- r8152old.c	2022-07-06 05:23:48.000000000 +0200
++++ r8152.c	2022-08-17 14:25:07.929345965 +0200
+@@ -20458,9 +20458,9 @@
+ 		return -EINVAL;
+ 	}
+ 
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26)
+-	netif_set_gso_max_size(netdev, tso_size);
+-#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26) */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,19,0)
++	netif_set_tso_max_size(netdev, tso_size);
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(5,19,0) */
+ 
+ 	return count;
+ }
+@@ -20620,12 +20620,9 @@
+ 	rtl_get_mapt_ver(tp);
+ 
+ 	netdev->ethtool_ops = &ops;
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26)
+-	if (!tp->sg_use)
+-		netif_set_gso_max_size(netdev, RTL_LIMITED_TSO_SIZE);
+-#else
+-	netdev->features &= ~(NETIF_F_TSO | NETIF_F_TSO6);
+-#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26) */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,19,0)
++	netif_set_tso_max_size(netdev, RTL_LIMITED_TSO_SIZE);
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(5,19,0) */
+ 
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(4,10,0)
+ 	/* MTU range: 68 - 1500 or 9194 */
+@@ -20837,6 +20834,10 @@
+ 	/* Getac */
+ 	REALTEK_USB_DEVICE(0x2baf, 0x0012),
+ 
++	/* ASUS */
++	REALTEK_USB_DEVICE(0x0b05, 0x1976),
++
++
+ 	{}
+ };
+ 
