@@ -1,3 +1,9 @@
+Patched the driver to be installed via DKMS,
+Patched the driver to add support for Asus C2500 to be installed via DKMS,
+
+rules file needs to be copied to /etc/udev/rules.d/
+
+
 - If you want to support S5 WOL, you have to find
 
 	EXTRA_CFLAGS += -DRTL8152_S5_WOL
